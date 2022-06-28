@@ -7,11 +7,12 @@ class Point {
 }
 
 class Boundary {
-    constructor(x, y, w, h) {
+    constructor(x, y, w, h, data) {
         this.x = x;
         this.y = y;
         this.w = w;
         this.h = h;
+        this.data = data;
     }
 
     contains(point) {
@@ -49,14 +50,14 @@ class Quadtree {
     }
 
     push(point) {
-        if (!this.boundary.contains(point)) return false;
+        if (!this.boundary.intersect(point)) return false;
         
         if (this.points.length >= this.capacity) {
 
             if (!this.subdivided) this.subdivide();
 
             for (const sub_tree of this.sub_trees) {
-                if (sub_tree.push(point)) return true;
+                sub_tree.push(point);
             }
             return true
         }
@@ -69,7 +70,7 @@ class Quadtree {
     querry(boundary) {
         if (!this.boundary.intersect(boundary)) return [];
 
-        let result = this.points.filter((point) => {return boundary.contains(point)});
+        let result = this.points.filter((point) => {return boundary.intersect(point)});
 
         if (this.subdivided) {
             for (const sub_tree of this.sub_trees) {

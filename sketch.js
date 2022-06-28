@@ -9,7 +9,11 @@ function draw_quadtree(qtree){
     rect(x, y, w, h);
 
     for (const point of qtree.points) {
-        circle(point.x, point.y, 2);
+        let x = point.x - point.w;
+        let y = point.y - point.h;
+        let w = point.w * 2;
+        let h = point.h * 2;
+        rect(x, y, w, h);
     }
 
     if (qtree.subdivided) {
@@ -41,12 +45,16 @@ function draw() {
     stroke(0, 255, 0);
     rect(x - 25, y - 25, 50, 50);
     for (const point of result) {
-        circle(point.x, point.y, 2);
+        let x = point.x - point.w;
+        let y = point.y - point.h;
+        let w = point.w * 2;
+        let h = point.h * 2;
+        rect(x, y, w, h);
     }
 }
 
 function mouseClicked() {
     let x = mouseX;
     let y = mouseY;
-    qtree.push(new Point(x, y, null));
+    qtree.push(new Boundary(x, y, 10, 10));
   }
